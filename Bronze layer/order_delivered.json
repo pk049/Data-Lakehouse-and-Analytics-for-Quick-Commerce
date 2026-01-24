@@ -1,0 +1,11 @@
+{
+  "event_id": "STRING",
+  "event_type": "STRING",
+  "event_time": "TIMESTAMP",
+  "ingestion_time": "TIMESTAMP",
+  "source_system": "STRING",
+
+  "order_id": "STRING",
+  "delivery_status": "STRING",
+  "delivery_time_minutes": "INT"
+}

@@ -1,0 +1,27 @@
+{
+  "event_id": "STRING",
+  "event_type": "STRING",
+  "event_time": "TIMESTAMP",
+  "ingestion_time": "TIMESTAMP",
+  "source_system": "STRING",
+
+  "order_id": "STRING",
+  "customer_id": "STRING",
+  "city": "STRING",
+  "store_id": "STRING",
+  "payment_method": "STRING",
+  "order_channel": "STRING",
+
+  "total_amount": "DECIMAL(10,2)",
+  "discount_amount": "DECIMAL(10,2)",
+
+  "order_items": [
+    {
+      "product_id": "STRING",
+      "product_name": "STRING",
+      "category": "STRING",
+      "quantity": "INT",
+      "price": "DECIMAL(10,2)"
+    }
+  ]
+}

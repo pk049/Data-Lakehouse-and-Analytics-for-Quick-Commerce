@@ -1,0 +1,7 @@
+{
+  "event_id": "STRING",
+  "event_type": "STRING",
+  "event_time": "TIMESTAMP",
+  "ingestion_time": "TIMESTAMP",
+  "source_system": "STRING"
+}
