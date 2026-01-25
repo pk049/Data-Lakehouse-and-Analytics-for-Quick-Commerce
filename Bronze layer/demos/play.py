@@ -5,8 +5,6 @@ from pyspark.sql.types import *
 spark = (
     SparkSession.builder
     .appName("order_consumer")
-    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .getOrCreate()
 )
 
@@ -18,19 +16,21 @@ schema = StructType([
     StructField("user_id", StringType()),
     StructField("city", StringType()),
     StructField("zone", StringType()),
-    StructField("items", IntegerType()),
-    StructField("items_count", IntegerType()),
+    StructField("items", ArrayType(elementType=StringType())),
+    StructField("item_count", IntegerType()),
     StructField("order_amount", IntegerType()),
     StructField("payment_method", StringType()),
     StructField("platform", StringType())
 ])
 
-kafka_df = spark.readStream \
-    .format("kafka") \
-    .option("kafka.bootstrap.servers", "localhost:9092") \
-    .option("subscribe", "order_placed_bronze") \
-    .option("startingOffsets", "latest") \
+kafka_df = (
+    spark.readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", "localhost:9092")
+    .option("subscribe", "order_placed_bronze")
+    .option("startingOffsets", "latest")
     .load()
+)
 
 parsed_df = (
     kafka_df
@@ -43,10 +43,9 @@ parsed_df = (
 
 query = (
     parsed_df.writeStream
-    .format("delta")
+    .format("console")
     .outputMode("append")
-    .option("path", "hdfs://localhost:9000/user/pratik/project/orders/orders_bronze")
-    .option("checkpointLocation", "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_bronze")
+    .option("truncate", False)
     .trigger(processingTime="2 seconds")
     .start()
 )

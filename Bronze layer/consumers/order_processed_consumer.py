@@ -7,7 +7,6 @@ from pyspark.sql.functions import (
     col,
     from_json,
     to_timestamp,
-    current_timestamp,
     expr
 )
 from pyspark.sql.types import *
@@ -36,8 +35,8 @@ schema = StructType([
     StructField("user_id", StringType()),
     StructField("city", StringType()),
     StructField("zone", StringType()),
-    StructField("items", IntegerType()),
-    StructField("items_count", IntegerType()),
+    StructField("items", ArrayType(elementType=StringType())),
+    StructField("item_count", IntegerType()),
     StructField("order_amount", IntegerType()),
     StructField("payment_method", StringType()),
     StructField("platform", StringType())
@@ -64,7 +63,6 @@ parsed_df = (
     .select(from_json(col("json_str"), schema).alias("data"))
     .select("data.*")
     .withColumn("event_time", to_timestamp("event_time"))
-    .withColumn("ingest_time", current_timestamp())
     # random processing delay between 60–120 seconds PER ROW
     .withColumn(
         "order_processed_time",
@@ -96,29 +94,29 @@ delta_query = (
 # ============================================================
 # Prepare Kafka Output (Processed Orders)
 # ============================================================
-kafka_out_df = (
-    parsed_df
-    .selectExpr(
-        "CAST(order_id AS STRING) AS key",
-        "to_json(struct(*)) AS value"
-    )
-)
+# kafka_out_df = (
+#     parsed_df
+#     .selectExpr(
+#         "CAST(order_id AS STRING) AS key",
+#         "to_json(struct(*)) AS value"
+#     )
+# )
 
 # ============================================================
 # Write to Kafka (Processed Topic)
 # ============================================================
-kafka_query = (
-    kafka_out_df.writeStream
-    .format("kafka")
-    .option("kafka.bootstrap.servers", "localhost:9092")
-    .option("topic", "orders_processed")
-    .option(
-        "checkpointLocation",
-        "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_sent/processed/"
-    )
-    .outputMode("append")
-    .start()
-)
+# kafka_query = (
+#     kafka_out_df.writeStream
+#     .format("kafka")
+#     .option("kafka.bootstrap.servers", "localhost:9092")
+#     .option("topic", "delivery_queue")
+#     .option(
+#         "checkpointLocation",
+#         "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_sent/processed/"
+#     )
+#     .outputMode("append")
+#     .start()
+# )
 
 # ============================================================
 # Await Termination

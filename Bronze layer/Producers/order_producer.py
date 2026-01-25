@@ -51,21 +51,67 @@ def inject_noise(event):
     elif noise_type == "future_time":
         event["event_time"] = (datetime.utcnow() + timedelta(days=1)).isoformat() + "Z"
 
-    event["is_noisy"] = True
     return event
 
 
 
 # =========================================================================
-# ---- ITEM MASTER ----
-ITEM_CATALOG = [
-    {
-        "item_id": f"item_{i:03d}",
-        "price": random.randint(15,25)*(random.choices([4,5,9,10],weights=[1,5,1,3],k=1)[0]),
-        "weight": 5 if i < 20 else 2 if i < 80 else 1
-    }
-    for i in range(1, 201)
-]
+with open("item_catalog.json") as f:
+    ITEM_CATALOG = json.load(f)
+
+for item in ITEM_CATALOG:
+    item["weight"] = 5 if int(item["item_id"].split("_")[1]) <= 20 else 1
+
+def pick_items(item_count):
+    items = random.choices(
+        ITEM_CATALOG,
+        weights=[i["weight"] for i in ITEM_CATALOG],
+        k=item_count
+    )
+
+    order_items = []
+    total_amount = 0
+
+    for item in items:
+        qty = random.randint(1, 3)
+        line_total = item["price"] * qty
+        total_amount += line_total
+
+        order_items.append({
+            "item_id": item["item_id"],
+            "quantity": qty,
+            "unit_price": item["price"],
+            "line_total": line_total
+        })
+
+    return order_items, round(total_amount, 2)
+
+
+
+
+# =========================================================================================
+# from pyspark.sql import SparkSession
+
+# spark = (
+#     SparkSession.builder
+#     .appName("Create-Dim-Item")
+#     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+#     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+#     .getOrCreate()
+# )
+
+# item_df = spark.createDataFrame(ITEM_CATALOG)
+
+# item_df.write \
+#     .format("delta") \
+#     .mode("overwrite") \
+#     .save("hdfs://localhost:9000/project/dimensions/item_schema/")
+
+# item_df.show(5)
+# # =====================================================================================================
+
+
+
 
 
 def pick_items(item_count):
@@ -98,7 +144,7 @@ def pick_items(item_count):
 
 TOPIC = "order_placed_bronze"
 BASE_RATE = 10
-SIM_START = datetime(2026, 1, 25, 0, 0)
+SIM_START = datetime(2026, 1, 25, 0, 0)  #+timedelta(hours=2)
 
 cities = ["Bangalore", "Mumbai","Pune"]
 zones = {
@@ -141,7 +187,6 @@ for minute in range(24 * 60):
             "payment_method": random.choice(payments),
             "platform": random.choice(platforms),
 
-            "is_noisy": False
         }
 
         # 🔥 Inject noise only for ~0.5% events
@@ -152,7 +197,7 @@ for minute in range(24 * 60):
         print(f"event sent are  \n {event}")
 
     producer.flush()
-    time.sleep(0.5)
+    time.sleep(0.5) # (1 Day ----> { 0.5 }*1440=720 seconds=12 minutes)
 
 
 # kafka-topics.sh --zookeeper localhost:2181 --create --topic order_placed_bronze --replication-factor 1 --partitions 1

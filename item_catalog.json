@@ -1,0 +1,247 @@
+[
+  {
+    "item_id": "item_001",
+    "category": "Grocery",
+    "price": 150
+  },
+  {
+    "item_id": "item_002",
+    "category": "Dairy",
+    "price": 54
+  },
+  {
+    "item_id": "item_003",
+    "category": "Grocery",
+    "price": 250
+  },
+  {
+    "item_id": "item_004",
+    "category": "Grocery",
+    "price": 120
+  },
+  {
+    "item_id": "item_005",
+    "category": "Grocery",
+    "price": 48
+  },
+  {
+    "item_id": "item_006",
+    "category": "Grocery",
+    "price": 69
+  },
+  {
+    "item_id": "item_007",
+    "category": "Beverages",
+    "price": 90
+  },
+  {
+    "item_id": "item_008",
+    "category": "Snacks",
+    "price": 150
+  },
+  {
+    "item_id": "item_009",
+    "category": "Dairy",
+    "price": 105
+  },
+  {
+    "item_id": "item_010",
+    "category": "Dairy",
+    "price": 180
+  },
+  {
+    "item_id": "item_011",
+    "category": "Snacks",
+    "price": 48
+  },
+  {
+    "item_id": "item_012",
+    "category": "Grocery",
+    "price": 200
+  },
+  {
+    "item_id": "item_013",
+    "category": "Snacks",
+    "price": 150
+  },
+  {
+    "item_id": "item_014",
+    "category": "Grocery",
+    "price": 63
+  },
+  {
+    "item_id": "item_015",
+    "category": "Snacks",
+    "price": 125
+  },
+  {
+    "item_id": "item_016",
+    "category": "Snacks",
+    "price": 72
+  },
+  {
+    "item_id": "item_017",
+    "category": "Grocery",
+    "price": 75
+  },
+  {
+    "item_id": "item_018",
+    "category": "Snacks",
+    "price": 160
+  },
+  {
+    "item_id": "item_019",
+    "category": "Grocery",
+    "price": 105
+  },
+  {
+    "item_id": "item_020",
+    "category": "Snacks",
+    "price": 85
+  },
+  {
+    "item_id": "item_021",
+    "category": "Dairy",
+    "price": 125
+  },
+  {
+    "item_id": "item_022",
+    "category": "Grocery",
+    "price": 120
+  },
+  {
+    "item_id": "item_023",
+    "category": "Dairy",
+    "price": 85
+  },
+  {
+    "item_id": "item_024",
+    "category": "Snacks",
+    "price": 250
+  },
+  {
+    "item_id": "item_025",
+    "category": "Dairy",
+    "price": 125
+  },
+  {
+    "item_id": "item_026",
+    "category": "Grocery",
+    "price": 180
+  },
+  {
+    "item_id": "item_027",
+    "category": "Snacks",
+    "price": 105
+  },
+  {
+    "item_id": "item_028",
+    "category": "Dairy",
+    "price": 240
+  },
+  {
+    "item_id": "item_029",
+    "category": "Snacks",
+    "price": 90
+  },
+  {
+    "item_id": "item_030",
+    "category": "Beverages",
+    "price": 125
+  },
+  {
+    "item_id": "item_031",
+    "category": "Snacks",
+    "price": 85
+  },
+  {
+    "item_id": "item_032",
+    "category": "Snacks",
+    "price": 120
+  },
+  {
+    "item_id": "item_033",
+    "category": "Beverages",
+    "price": 60
+  },
+  {
+    "item_id": "item_034",
+    "category": "Dairy",
+    "price": 115
+  },
+  {
+    "item_id": "item_035",
+    "category": "Grocery",
+    "price": 48
+  },
+  {
+    "item_id": "item_036",
+    "category": "Dairy",
+    "price": 125
+  },
+  {
+    "item_id": "item_037",
+    "category": "Grocery",
+    "price": 105
+  },
+  {
+    "item_id": "item_038",
+    "category": "Beverages",
+    "price": 115
+  },
+  {
+    "item_id": "item_039",
+    "category": "Grocery",
+    "price": 250
+  },
+  {
+    "item_id": "item_040",
+    "category": "Snacks",
+    "price": 125
+  },
+  {
+    "item_id": "item_041",
+    "category": "Snacks",
+    "price": 63
+  },
+  {
+    "item_id": "item_042",
+    "category": "Grocery",
+    "price": 190
+  },
+  {
+    "item_id": "item_043",
+    "category": "Dairy",
+    "price": 230
+  },
+  {
+    "item_id": "item_044",
+    "category": "Snacks",
+    "price": 125
+  },
+  {
+    "item_id": "item_045",
+    "category": "Dairy",
+    "price": 85
+  },
+  {
+    "item_id": "item_046",
+    "category": "Dairy",
+    "price": 230
+  },
+  {
+    "item_id": "item_047",
+    "category": "Grocery",
+    "price": 120
+  },
+  {
+    "item_id": "item_048",
+    "category": "Grocery",
+    "price": 160
+  },
+  {
+    "item_id": "item_049",
+    "category": "Snacks",
+    "price": 54
+  }
+]
