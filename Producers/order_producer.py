@@ -35,7 +35,6 @@ def inject_noise(event):
         "wrong_amount",
         "negative_qty",
         "missing_field",
-        "future_time"
     ])
 
     if noise_type == "wrong_amount":
@@ -47,9 +46,6 @@ def inject_noise(event):
 
     elif noise_type == "missing_field":
         event.pop("payment_method", None)
-
-    elif noise_type == "future_time":
-        event["event_time"] = (datetime.utcnow() + timedelta(days=1)).isoformat() + "Z"
 
     return event
 
@@ -90,25 +86,25 @@ def pick_items(item_count):
 
 
 # =========================================================================================
-# from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession
 
-# spark = (
-#     SparkSession.builder
-#     .appName("Create-Dim-Item")
-#     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-#     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-#     .getOrCreate()
-# )
+spark = (
+    SparkSession.builder
+    .appName("Create-Dim-Item")
+    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+    .getOrCreate()
+)
 
-# item_df = spark.createDataFrame(ITEM_CATALOG)
+item_df = spark.createDataFrame(ITEM_CATALOG)
 
-# item_df.write \
-#     .format("delta") \
-#     .mode("overwrite") \
-#     .save("hdfs://localhost:9000/project/dimensions/item_schema/")
+item_df.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .save("hdfs://localhost:9000/project/dimensions/item_schema/")
 
-# item_df.show(5)
-# # =====================================================================================================
+item_df.show(5)
+# =====================================================================================================
 
 
 
@@ -190,7 +186,7 @@ for minute in range(24 * 60):
         }
 
         # 🔥 Inject noise only for ~0.5% events
-        if random.random() < 0.005:
+        if random.random() < 0.05:
             event = inject_noise(event)
 
         producer.send(TOPIC, value=event)

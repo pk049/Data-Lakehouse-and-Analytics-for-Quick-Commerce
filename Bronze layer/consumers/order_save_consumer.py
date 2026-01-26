@@ -38,15 +38,14 @@ parsed_df = (
     .select(from_json(col("json_str"), schema).alias("data"))
     .select("data.*")
     .withColumn("event_time", to_timestamp("event_time"))
-    .withColumn("ingest_time", current_timestamp())
 )
 
 query = (
     parsed_df.writeStream
     .format("delta")
     .outputMode("append")
-    .option("path", "hdfs://localhost:9000/user/pratik/project/orders/orders_bronze/raw/")
-    .option("checkpointLocation", "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_bronze/raw/")
+    .option("path", "hdfs://localhost:9000/user/pratik/project/orders/orders_bronze/")
+    .option("checkpointLocation", "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_bronze/")
     .trigger(processingTime="2 seconds")
     .start()
 )
