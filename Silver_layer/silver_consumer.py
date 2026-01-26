@@ -51,7 +51,7 @@ query = (
     .outputMode("append")
     .option(
         "checkpointLocation",
-        "hdfs://localhost:9000/user/pratik/project/orders/checkpoints/orders_silver/"
+        "hdfs://localhost:9000/user/pratik/project/checkpoints/orders_silver/"
     )
     .trigger(processingTime="2 seconds")
     .start(
