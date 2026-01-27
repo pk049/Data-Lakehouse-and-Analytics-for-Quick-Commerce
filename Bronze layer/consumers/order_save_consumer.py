@@ -2,6 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
 
+
 spark = (
     SparkSession.builder
     .appName("order_consumer")
@@ -9,6 +10,7 @@ spark = (
     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
     .getOrCreate()
 )
+spark.conf.set("spark.sql.session.timeZone", "Asia/Kolkata")
 
 schema = StructType([
     StructField("event_id", StringType()),
@@ -32,12 +34,16 @@ kafka_df = spark.readStream \
     .option("startingOffsets", "latest") \
     .load()
 
+
 parsed_df = (
     kafka_df
     .selectExpr("CAST(value AS STRING) as json_str")
     .select(from_json(col("json_str"), schema).alias("data"))
     .select("data.*")
-    .withColumn("event_time", to_timestamp("event_time"))
+    .withColumn(
+        "event_time",
+        expr("current_timestamp() + make_interval(0, 0, 0, 0, 0, cast(rand() * 60 as int))")
+    )
 )
 
 query = (

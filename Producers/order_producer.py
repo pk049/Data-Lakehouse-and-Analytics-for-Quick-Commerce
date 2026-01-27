@@ -13,21 +13,21 @@ producer = KafkaProducer(
 # ===================================================================
 def get_weight(hour):
     if 7 <= hour < 10:
-        return 1.2
+        return 12
     elif 10 <= hour < 12:
-        return 1.0
+        return 10
     elif 12 <= hour < 14:
-        return 2.2
+        return 22
     elif 14 <= hour < 16:
-        return 0.8
+        return 8
     elif 16 <= hour < 19:
-        return 1.3
+        return 13
     elif 19 <= hour < 22:
-        return 2.8
+        return 28
     elif 22 <= hour < 24:
-        return 0.6
+        return 6
     else:  # 00–07
-        return 0.2
+        return 2
 
 
 def inject_noise(event):
@@ -135,12 +135,10 @@ def pick_items(item_count):
     return order_items, round(total_amount, 2)
 
 # =========================================================================
-
-
-
 TOPIC = "order_placed_bronze"
-BASE_RATE = 10
-SIM_START = datetime(2026, 1, 25, 0, 0)  #+timedelta(hours=2)
+BASE_RATE = 1
+# SIM_START = datetime(2026, 1, 25, 0, 0)  #+timedelta(hours=2)
+SIM_START=datetime.now()
 
 cities = ["Bangalore", "Mumbai","Pune"]
 zones = {
@@ -153,7 +151,7 @@ platforms = ["Android", "iOS", "Web"]
 
 
 for minute in range(24 * 60):
-    event_time = SIM_START + timedelta(minutes=minute)
+    event_time = SIM_START + timedelta(minutes=minute,seconds=random.randint(0, 59))
     weight = get_weight(event_time.hour)
     orders = int(BASE_RATE * weight)
 
@@ -193,7 +191,7 @@ for minute in range(24 * 60):
         print(f"event sent are  \n {event}")
 
     producer.flush()
-    time.sleep(0.5) # (1 Day ----> { 0.5 }*1440=720 seconds=12 minutes)
+    time.sleep(1) # (1 Day ----> { 0.5 }*1440=720 seconds=12 minutes)
 
 
 # kafka-topics.sh --zookeeper localhost:2181 --create --topic order_placed_bronze --replication-factor 1 --partitions 1
