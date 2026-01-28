@@ -10,8 +10,8 @@ kafka-server-start.sh server.properties
 
 start-master.sh
 
-spark submit orders_producer.py --master local[2]
-spark submit orders_save_consumer.py --master local[2]
+spark-submit orders_producer.py --master local[2]
+spark-submit orders_save_consumer.py --master local[2]
 spark-submit silver_consumer.py --master local[2]
 
 

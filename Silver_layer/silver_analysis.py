@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col,unix_timestamp,explode,from_json,count,asc,desc,avg
+from pyspark.sql.functions import col,unix_timestamp,explode,from_json,count,asc,desc,avg,window,count
 from pyspark.sql.types import *
 
 # Spark is adding UTC()-------->IST(5.30)
@@ -26,16 +26,32 @@ spark.sparkContext.setLogLevel("WARN")
 # ============================================================
 # Read Delta Table (Batch)
 # ============================================================
-processed_df = (
+df = (
      spark.read
     .format("delta")
     .load("hdfs://localhost:9000/user/pratik/project/orders/orders_silver/")
 )
 
-dimension_item=(
-    spark.read\
-    .format('delta')\
-    .load('hdfs://localhost:9000/project/dimensions/item_schema/')
+windowed_df = (
+    df
+    .groupBy(
+        window(col("event_time"), "5 minutes")
+    )
+    .agg(count("*").alias("order_count"))
+    .orderBy("window")
 )
 
+series_df = windowed_df.select(
+    col("window.start").alias("time"),
+    col("order_count")
+).orderBy("time")
+
+
+series_df.write \
+    .format("delta") \
+    .mode("append") \
+    .save("hdfs://localhost:9000/user/pratik/project/orders/orders_gold/5min_window")
+
+
+windowed_df.show(n=200,truncate=False)
 

@@ -86,24 +86,24 @@ def pick_items(item_count):
 
 
 # =========================================================================================
-from pyspark.sql import SparkSession
+# from pyspark.sql import SparkSession
 
-spark = (
-    SparkSession.builder
-    .appName("Create-Dim-Item")
-    .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
-    .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
-    .getOrCreate()
-)
+# spark = (
+#     SparkSession.builder
+#     .appName("Create-Dim-Item")
+#     .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+#     .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+#     .getOrCreate()
+# )
 
-item_df = spark.createDataFrame(ITEM_CATALOG)
+# item_df = spark.createDataFrame(ITEM_CATALOG)
 
-item_df.write \
-    .format("delta") \
-    .mode("overwrite") \
-    .save("hdfs://localhost:9000/project/dimensions/item_schema/")
+# item_df.write \
+#     .format("delta") \
+#     .mode("overwrite") \
+#     .save("hdfs://localhost:9000/project/dimensions/item_schema/")
 
-item_df.show(5)
+# item_df.show(5)
 # =====================================================================================================
 
 
@@ -199,3 +199,10 @@ for minute in range(24 * 60):
 # kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic order_placed_bronze
 
 #  "ingest_time": datetime.utcnow().isoformat() + "Z",
+
+
+
+# 1sec 1min
+# 60sec 60min
+# 1min  1hr
+# 24min      24hr

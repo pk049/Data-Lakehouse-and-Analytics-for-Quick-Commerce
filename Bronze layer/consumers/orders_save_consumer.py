@@ -31,7 +31,7 @@ kafka_df = spark.readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", "localhost:9092") \
     .option("subscribe", "order_placed_bronze") \
-    .option("startingOffsets", "latest") \
+    .option("startingOffsets", "earliest") \
     .load()
 
 
@@ -59,3 +59,8 @@ query = (
 query.awaitTermination()
 
 spark.stop()
+
+
+# can spark read kafka offset
+# check kafka key from topic
+
