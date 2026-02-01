@@ -50,7 +50,7 @@ series_df = windowed_df.select(
 series_df.write \
     .format("delta") \
     .mode("append") \
-    .save("hdfs://localhost:9000/user/pratik/project/orders/orders_gold/5min_window")
+    .save("hdfs://localhost:9000/user/pratik/project/orders/rnn_data")
 
 
 windowed_df.show(n=200,truncate=False)

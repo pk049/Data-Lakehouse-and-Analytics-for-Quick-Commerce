@@ -73,7 +73,7 @@ gold_df = (
 )
 
 
-gold_path = "hdfs://localhost:9000/user/pratik/project/orders/orders_gold/"
+gold_path = "hdfs://localhost:9000/user/pratik/project/orders/orders_gold/item_category_per_city"
 
 (
     gold_df

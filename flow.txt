@@ -1,0 +1,38 @@
+                 ┌──────────────────┐
+                 │   Kafka Topic    │
+                 │ (Raw Streaming)  │
+                 └─────────┬────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │   Bronze Layer     │
+                │ (Raw Ingestion)    │
+                │ - No cleanup       │
+                │ - Just ingestion   │
+                └─────────┬──────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │   Silver Layer     │
+                │ (Cleaned + Refined)│
+                │ - Parsing           │
+                │ - Deduplication     │
+                │ - Validation        │
+                └─────────┬──────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │   Gold Layer       │
+                │ (Feature-ready)    │
+                │ - Aggregations      │
+                │ - Business Columns  │
+                │ - ML-ready table    │
+                └─────────┬──────────┘
+                           │
+                           ▼
+                ┌────────────────────┐
+                │        RNN         │
+                │ (Training/Infer)   │
+                │ - Sequence model    │
+                │ - Predict patterns  │
+                └────────────────────┘
