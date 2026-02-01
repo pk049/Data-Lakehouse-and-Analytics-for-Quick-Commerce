@@ -1,7 +1,7 @@
 # Data-Lakehouse-and-Analytics-for-Quick-Commerce
 
 This project implements a complete end-to-end **Data Lakehouse pipeline** for a Quick-Commerce business.  
-It includes item catalog generation, Kafka-based order streaming, multi-layer data processing (Bronze → Silver → Gold), Hive analytics, and an RNN model for demand forecasting.
+It includes item catalog generation, Kafka-based order streaming, multi-layer data processing (Bronze → Silver → Gold)(Meddalion architecture), Hive analytics, and an RNN model for demand forecasting.
 
 ---
 
@@ -18,8 +18,7 @@ BIG_DATA_PROJECT/
 │   ├── Extras/
 │   └── schemas/
 ├── Silver_layer/
-│   ├── silver_consumer.py
-│   └── silver_analysis.py
+│   └── silver_consumer.py
 ├── Golden layer/
 │   ├── item_categories_per_city.py
 │   ├── data_for_rnn.py
