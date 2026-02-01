@@ -1,7 +1,7 @@
 # Data-Lakehouse-and-Analytics-for-Quick-Commerce
 
 This project implements a complete end-to-end **Data Lakehouse pipeline** for a Quick-Commerce business.  
-It includes item catalog generation, Kafka-based order streaming, multi-layer data processing (Bronze → Silver → Gold)(Meddalion architecture), Hive analytics, and an RNN model for demand forecasting.
+It includes item catalog generation, Kafka-based order streaming, multi-layer data processing (Bronze → Silver → Gold) (Medallion Architecture), Hive analytics, and an RNN model for demand forecasting.
 
 ---
 
@@ -38,6 +38,26 @@ BIG_DATA_PROJECT/
 
 ---
 
+## HDFS Structure
+
+```
+/Project
+│
+├── orders
+│   ├── orders_bronze
+│   ├── orders_silver
+│   └── orders_gold
+│       ├── 5min_window
+│       └── item_category_per_city
+│
+└── checkpoints
+    ├── orders_bronze
+    ├── orders_silver
+    └── orders_gold
+```
+
+---
+
 ## Overview
 
 This project builds a full Data Lakehouse pipeline for streaming and analytical workloads. It uses:
@@ -52,7 +72,8 @@ This project builds a full Data Lakehouse pipeline for streaming and analytical 
 
 ## How to Run
 
-### 1. Start All Services
+### 1. Start All Services  
+**Run `start.bash` manually:**
 ```
 cd Bash_scripts
 bash start.bash
