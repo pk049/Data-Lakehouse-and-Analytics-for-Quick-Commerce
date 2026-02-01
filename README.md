@@ -1,194 +1,130 @@
-Data-Lakehouse-and-Analytics-for-Quick-Commerce
+# Data-Lakehouse-and-Analytics-for-Quick-Commerce
 
-A complete end-to-end Big Data Lakehouse pipeline for a Quick-Commerce platform.
-This project simulates item catalog generation, synthetic order streaming, multi-layer data processing (Bronze → Silver → Gold), Hive analysis, and RNN-based demand forecasting using PyTorch.
+This project implements a complete end-to-end **Data Lakehouse pipeline** for a Quick-Commerce business.  
+It includes item catalog generation, Kafka-based order streaming, multi-layer data processing (Bronze → Silver → Gold), Hive analytics, and an RNN model for demand forecasting.
 
-📂 Project Structure
+---
+
+## Project Structure
+
+```
 BIG_DATA_PROJECT/
-│
 ├── Bash_scripts/
 │   ├── reset.bash
 │   └── start.bash
-│
 ├── Bronze layer/
 │   ├── consumers/
 │   │   └── orders_save_consumer.py
 │   ├── Extras/
 │   └── schemas/
-│       └── (Schemas for bronze order ingestion)
-│
 ├── Silver_layer/
 │   ├── silver_consumer.py
 │   └── silver_analysis.py
-│
 ├── Golden layer/
 │   ├── item_categories_per_city.py
 │   ├── data_for_rnn.py
 │   └── rnn_data_read.py
-│
 ├── Producers/
 │   ├── generate_item_catalog.py
 │   ├── item_catalog.json
 │   └── order_producer.py
-│
 ├── Pytorch/
 │   └── rnn.py
-│
 ├── Hive/
-│   └── (Hive queries for analytical workloads)
-│
 ├── Jars/
-│   └── (Delta Lake & Kafka JARs)
-│
 ├── flow.txt
 ├── item_catalog.json
 └── README.md
+```
 
-📝 Overview
+---
 
-This project builds a full data lakehouse pipeline for a Quick-Commerce business.
-It uses:
+## Overview
 
-Kafka (streaming orders)
+This project builds a full Data Lakehouse pipeline for streaming and analytical workloads. It uses:
 
-Spark Structured Streaming (ETL: Bronze → Silver → Gold)
+- Kafka for streaming orders  
+- Spark Structured Streaming for ETL  
+- Delta Lake for storage & versioning  
+- Hive for SQL analytics  
+- PyTorch RNN for demand forecasting  
 
-Delta Lake (storage & versioning)
+---
 
-Hive (analytics)
+## How to Run
 
-PyTorch RNN (demand forecasting)
+### 1. Start All Services
+```
+cd Bash_scripts
+bash start.bash
+```
 
-🔧 Bash Scripts
-1️⃣ reset.bash
+This will start:
+- Zookeeper  
+- Kafka  
+- Spark Master  
+- Hive Metastore  
+- Beeline  
 
-Deletes all checkpoints and table data from project storage.
+---
 
-Useful for resetting the entire lakehouse pipeline.
+### 2. Generate Item Catalog
+```
+python Producers/generate_item_catalog.py
+```
 
-2️⃣ start.bash
+---
 
-Starts all necessary services:
+### 3. Start Order Producer
+```
+python Producers/order_producer.py
+```
+This sends synthetic orders to Kafka topic: `order_placed_bronze`.
 
-Zookeeper
+---
 
-Kafka Broker
+### 4. Run Bronze Consumer
+```
+python "Bronze layer/consumers/orders_save_consumer.py"
+```
 
-Spark Master
+---
 
-Hive Metastore
+### 5. Run Silver Layer
+```
+python Silver_layer/silver_consumer.py
+python Silver_layer/silver_analysis.py
+```
 
-Beeline
+---
 
-📤 Producers
-generate_item_catalog.py
+### 6. Run Gold Layer
+```
+python "Golden layer/item_categories_per_city.py"
+python "Golden layer/data_for_rnn.py"
+```
 
-Generates Item Dimension / Catalog
+---
 
-Saves catalog to:
+### 7. Train RNN Model
+```
+python Pytorch/rnn.py
+```
 
-Project folder
+---
 
-HDFS (for downstream pipelines)
+### 8. Reset the Entire Pipeline
+```
+bash Bash_scripts/reset.bash
+```
 
-order_producer.py
+---
 
-Produces synthetic orders (time-series based)
+## Additional Files
 
-Publishes messages to Kafka topic: order_placed_bronze
+- `flow.txt` — describes complete pipeline flow  
+- `item_catalog.json` — exported item catalog  
+- `Hive/` — Hive SQL queries  
+- `Jars/` — Delta Lake and Kafka dependencies  
 
-🥉 Bronze Layer
-orders_save_consumer.py
-
-Kafka consumer for raw order events
-
-Stores raw unprocessed data in Bronze Delta tables
-
-This is the first consumer to run
-
-Schemas Folder
-
-Contains schema definitions for bronze order ingestion.
-
-🥈 Silver Layer
-silver_consumer.py
-
-Reads data from Bronze tables
-
-Performs:
-
-Cleaning
-
-Transformation
-
-Standardization
-
-Stores processed output back into Silver Delta tables
-
-silver_analysis.py
-
-Performs aggregations on Silver tables
-
-Prepares aggregated datasets for RNN training
-
-🥇 Golden Layer
-item_categories_per_city.py
-
-Joins Silver data into Gold-level aggregated categories
-
-Generates metrics: item availability per city
-
-data_for_rnn.py
-
-Creates 5-minute windowed timeframes
-
-Produces training sequences for RNN forecasting
-
-Saves data as Delta/JSON for the ML pipeline
-
-rnn_data_read.py
-
-Reads the prepared Gold dataset
-
-Used before RNN model training
-
-🤖 PyTorch RNN
-rnn.py
-
-RNN model for demand forecasting
-
-Uses sliding window data from Gold layer
-
-Predicts future order volume per category/city
-
-🐝 Hive
-
-Contains Hive SQL scripts:
-
-Exploratory analysis
-
-Business intelligence queries
-
-Report generation over Gold/Silver tables
-
-📦 Jars
-
-Includes:
-
-Delta Lake JARs
-
-Kafka JARs
-
-Other dependencies used by Spark jobs
-
-📘 flow.txt
-
-Summary of complete project architecture
-
-Data movement sequence
-
-Component interactions
-
-🗂 item_catalog.json
-
-Static export of the generated item catalog.
+---
