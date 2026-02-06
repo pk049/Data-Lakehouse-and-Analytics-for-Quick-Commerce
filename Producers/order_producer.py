@@ -183,7 +183,7 @@ for minute in range(24 * 60):
 
         }
 
-        # 🔥 Inject noise only for ~0.5% events
+        #  Inject noise only for ~0.5% events
         if random.random() < 0.05:
             event = inject_noise(event)
 
